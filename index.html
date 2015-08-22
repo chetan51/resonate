@@ -580,7 +580,7 @@
     });
 
     function fitScale() {
-      return [.000744 * document.body.clientWidth, 1, 1];
+      return [(1 / document.body.clientHeight) * document.body.clientWidth, 1, 1];
     }
 
     // Viewport camera/setup
