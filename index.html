@@ -613,11 +613,7 @@
 
   </script>
 
-  <script type="text/javascript">
-  /**
-   * Bootstrap
-   */
-  </script>
+  <script type="text/javascript" src="vendor/stats.js"></script>
 
   <script type="text/javascript" src="main.js"></script>
 
@@ -625,6 +621,33 @@
 
 </head>
 <body>
+  <script type="text/javascript">
+  var stats = new Stats();
+  stats.setMode( 0 ); // 0: fps, 1: ms, 2: mb
+
+  // align top-left
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.top = '0px';
+  stats.domElement.style['z-index'] = '100';
+
+  document.body.appendChild( stats.domElement );
+
+  var update = function () {
+
+      stats.begin();
+
+      // monitored code goes here
+
+      stats.end();
+
+      requestAnimationFrame( update );
+
+  };
+
+  requestAnimationFrame( update );
+  </script>
+
   <div id="info"></div>
 </body>
 </html>

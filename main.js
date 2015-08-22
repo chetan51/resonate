@@ -2,23 +2,26 @@ DomReady.ready(function() {
   window.mathboxSetup();
 
   mathbox.grid();
-  mathbox.curve({
-    id: 'my-curve',
-    domain: [0, 0.1],
-    n: 1024,
-    expression: function (x) { return 0; },
-  })
 
-  function pulse(scale) {
-    mathbox.animate('#my-curve', {
-      expression: function (x) { return scale * Math.sin(440*x * 2*Math.PI); },
+  function pulse(curve, scale) {
+    mathbox.animate('#my-curve-' + curve, {
+      expression: function (x) { return scale * Math.sin(curve + 44*x * 2*Math.PI); },
     }, {
-      duration: 1000,
+      duration: 3000,
       callback: function() {
-        pulse(scale == 1 ? 0 : 1);
+        pulse(curve, scale == 1 ? 0 : 1);
       }
     });
   }
 
-  pulse(1);
+  for (var i = 0; i < 20; i++) {
+    mathbox.curve({
+      id: 'my-curve-' + i,
+      domain: [0, 0.1],
+      n: 1024,
+      expression: function (x) { return 0; },
+    })
+
+    pulse(i, 1);
+  }
 });
