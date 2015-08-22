@@ -579,19 +579,29 @@
       document.getElementById('info').style.opacity = '0';
     });
 
+    function fitScale() {
+      return [.000744 * document.body.clientWidth, 1, 1];
+    }
+
     // Viewport camera/setup
     mathbox
       // Cartesian viewport
       .viewport({
         type: 'cartesian',
         range: [[0, 0.1], [-2, 2], [-1, 1]],
-        scale: [1, 1, 1],
+        scale: fitScale(),
       })
       .camera({
-        orbit: 3.5,
+        orbit: 3.17,
         phi: τ/4,
         theta: 0,
-      })
+      });
+
+    window.onresize = function() {
+      mathbox.viewport({
+        scale: fitScale(),
+      });
+    }
   }
 
   var mathboxScript = [
