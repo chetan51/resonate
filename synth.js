@@ -189,11 +189,13 @@ window.Synth = function Synth(spectrogram) {
         var note = new Note(keyNumber, 127);
 
         spectrogram.add(note);
+        setTimeout(function() {
+            spectrogram.remove(note);
+        }, 500);
 
 		container = new Audio(src);
 		container.addEventListener('ended', function() {
             container = null;
-            spectrogram.remove(note);
         });
 		container.addEventListener('loadeddata', function(e) { e.target.play(); });
 		container.autoplay = false;
@@ -229,8 +231,7 @@ window.Synth = function Synth(spectrogram) {
 				break;
 		
 			// space
-			case 16:
-				break;
+			case 32:
 				fnPlaySong([
 					['E,0', 8],
 					['D,0', 8],
@@ -294,7 +295,6 @@ window.Synth = function Synth(spectrogram) {
 	}
 
 	var fnPlaySong = function(arr) {
-	
 		if(arr.length>0) {
 		
 			var noteLen = 1000*(1/parseInt(arr[0][1]));
