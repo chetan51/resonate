@@ -6,14 +6,18 @@ DomReady.ready(function() {
   var maestro = new window.Maestro(synth);
 
   setTimeout(function() {
-    spectrogram.add([new Note(69, 1), new Note(71, 1)]);
+    spectrogram.add(new Note(69, 1));
   }, 1000);
 
   setTimeout(function() {
-    spectrogram.remove([new Note(69, 0)]);
-  }, 3000);
+    spectrogram.add(new Note(71, 1));
+  }, 1300);
 
   setTimeout(function() {
-    spectrogram.remove([new Note(71, 0)]);
-  }, 6000);
+    spectrogram.remove(new Note(69, 0));
+  }, 5000);
+
+  setTimeout(function() {
+    spectrogram.remove(new Note(71, 0));
+  }, 8000);
 });

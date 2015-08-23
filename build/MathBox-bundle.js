@@ -42850,7 +42850,7 @@ MathBox.Animator.prototype = {
         }
 
         // Stop all animations on the given keys
-        animator.stop(this, stop);
+        animator.stop(this, stop, true);
       }
 
       // Pass through to Attributes
@@ -42880,11 +42880,11 @@ MathBox.Animator.prototype = {
   /**
    * Stop all animations on an object.
    */
-  stop: function (object, keys) {
-    // Dequeue all animations, applying instantly.
-    _.each(keys || object.__queue, function (queue, key) {
+  stop: function (object, keys, apply) {
+    // Dequeue all animations, applying if requested.
+    _.each(keys || object.__queue, function (key) {
       while (object.__queue[key]) {
-        this.dequeue(object, key, true);
+        this.dequeue(object, key, apply);
       }
     }.bind(this));
   },
@@ -42901,6 +42901,10 @@ MathBox.Animator.prototype = {
     this.attach(object);
 
     _.each(attributes, function (value, key) {
+      if (options.immediately) {
+        this.stop(object, [key], false);
+      }
+
       // Init queue if necessary.
       var queue = object.__queue[key] = object.__queue[key] || [];
 
@@ -43695,7 +43699,7 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
     var animator = this.animator;
 
     _.each(this.select(selector, true), function (primitive) {
-      animator.stop(primitive, keys);
+      animator.stop(primitive, keys, true);
       primitive.style && animator.stop(primitive.style, keys);
     });
 

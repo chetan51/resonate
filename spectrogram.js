@@ -1,7 +1,7 @@
 window.Spectrogram = function(mathbox) {
     this.mathbox = mathbox;
 
-    this.animationDuration = 200;
+    this.animationDuration = 1000;
 
     this.notes = {}
 
@@ -14,60 +14,48 @@ window.Spectrogram = function(mathbox) {
     });
 }
 
-Spectrogram.prototype.add = function(notes) {
+Spectrogram.prototype.add = function(note) {
     var self = this;
 
-    for (var note of notes) {
-        this.notes[note.keyNumber] = note;
+    this.notes[note.keyNumber] = note;
 
-        var addCurve = function(note) {
-            self.mathbox.curve({
-              id: 'note-' + note.keyNumber,
-              domain: self.mathbox.viewport().axis(0),
-              n: 1024,
-              lineWidth: 1,
-              color: parseInt(randomColor({hue: 'blue'}).replace(/^#/, ''), 16),
-            });
+    self.mathbox.curve({
+      id: 'note-' + note.keyNumber,
+      domain: self.mathbox.viewport().axis(0),
+      n: 1024,
+      lineWidth: 1,
+      color: parseInt(randomColor({hue: 'blue'}).replace(/^#/, ''), 16),
+    });
 
-            self.mathbox.animate('#note-' + note.keyNumber, {
-              expression: function (x) { return Math.sin(note.frequency() * x * 2*Math.PI); },
-            }, {
-              duration: self.animationDuration,
-            });
-        }
-
-        addCurve(note);
-    }
+    self.mathbox.animate('#note-' + note.keyNumber, {
+      expression: function (x) { return Math.sin(note.frequency() * x * 2*Math.PI); },
+    }, {
+      duration: self.animationDuration,
+    });
 
     this.updateComposite();
 }
 
-Spectrogram.prototype.remove = function(notes) {
+Spectrogram.prototype.remove = function(note) {
     var self = this;
 
-    for (var note of notes) {
-        var removeCurve = function(note) {
-            delete self.notes[note.keyNumber];
+    delete self.notes[note.keyNumber];
 
-            self.mathbox.animate('#note-' + note.keyNumber, {
-              expression: function (x) { return 0; },
-            }, {
-              duration: self.animationDuration,
-              callback: function() {
-                self.mathbox.animate('#note-' + note.keyNumber, {
-                    opacity: 0,
-                }, {
-                    duration: self.animationDuration,
-                    callback: function () {
-                        self.mathbox.remove('#note-' + note.keyNumber);
-                    }
-                });
-              }
-            });
-        }
-
-        removeCurve(note);
-    }
+    self.mathbox.animate('#note-' + note.keyNumber, {
+      expression: function (x) { return 0; },
+    }, {
+      duration: self.animationDuration,
+      callback: function() {
+        self.mathbox.animate('#note-' + note.keyNumber, {
+            opacity: 0,
+        }, {
+            duration: self.animationDuration,
+            callback: function () {
+                self.mathbox.remove('#note-' + note.keyNumber);
+            }
+        });
+      }
+    });
 
     this.updateComposite();
 }
@@ -89,5 +77,6 @@ Spectrogram.prototype.updateComposite = function() {
       },
     }, {
       duration: this.animationDuration,
+      immediately: true
     });
 }
