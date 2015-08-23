@@ -1,27 +1,15 @@
 DomReady.ready(function() {
   window.mathboxSetup();
 
-  mathbox.grid();
+  spectrogram = new window.Spectrogram(mathbox);
 
-  function pulse(curve, scale) {
-    mathbox.animate('#my-curve-' + curve, {
-      expression: function (x) { return scale * Math.sin(curve + 44*x * 2*Math.PI); },
-    }, {
-      duration: 3000,
-      callback: function() {
-        pulse(curve, scale == 1 ? 0 : 1);
-      }
-    });
-  }
+  spectrogram.add([440.0, 480.0]);
 
-  for (var i = 0; i < 20; i++) {
-    mathbox.curve({
-      id: 'my-curve-' + i,
-      domain: [0, 0.1],
-      n: 1024,
-      expression: function (x) { return 0; },
-    })
+  setTimeout(function() {
+    spectrogram.remove([440.0]);
+  }, 3000);
 
-    pulse(i, 1);
-  }
+  setTimeout(function() {
+    spectrogram.remove([480.0]);
+  }, 6000);
 });
