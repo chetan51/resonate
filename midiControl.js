@@ -2,15 +2,11 @@ window.MidiControl = function MidiControl(spectrogram) {
 
 	this.spectrogram = spectrogram;
 
-	var __audioSynth = new AudioSynth();
-	__audioSynth.setVolume(0.5);
-	var __octave = 4;
-
 	var keysPressed = [];
 	var player = MIDI.Player;
 
 	var midiFileDir = "midifiles/";
-	var midiFiles = ["test1.mid", "test2.mid"];
+	var midiFiles = ["test1.mid", "test2.mid", "test3.mid"];
 	var currentMidiFile = "";
 
 	var fnVisualizeNote = function(keyNumber, keyChannel) {
