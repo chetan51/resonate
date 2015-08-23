@@ -174,7 +174,7 @@ window.Synth = function Synth(spectrogram) {
 	
 	}
 
-    var noteMap = {'C':24,'C#':25,'D':26,'D#':27,'E':28,'F':29,'F#':30,'G':31,'G#':32,'A':21,'A#':22,'B':23};
+    var noteMap = {'C':24,'C#':25,'D':26,'D#':27,'E':28,'F':29,'F#':30,'G':31,'G#':32,'A':33,'A#':34,'B':35};
 
 	// Keys you have pressed down.
 	var keysPressed = [];
