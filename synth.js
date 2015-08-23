@@ -207,6 +207,40 @@ window.Synth = function Synth(spectrogram) {
 	};
 
 	// Detect keypresses, play notes.
+    var song = [
+        ['E,0', 8],
+        ['D,0', 8],
+        ['C,0', 2],
+        ['C,0', 8],
+        ['D,0', 8],
+        ['C,0', 8],
+        ['E,0', 8],
+        ['D,0', 1],
+        ['C,0', 8],
+        ['D,0', 8],
+        ['E,0', 2],
+        ['A,0', 8],
+        ['G,0', 8],
+        ['E,0', 8],
+        ['C,0', 8],
+        ['D,0', 1],
+        ['A,0', 8],
+        ['B,0', 8],
+        ['C,1', 2],
+        ['B,0', 8],
+        ['C,1', 8],
+        ['D,1', 8],
+        ['C,1', 8],
+        ['A,0', 1],
+        ['G,0', 8],
+        ['A,0', 8],
+        ['B,0', 2],
+        ['C,1', 8],
+        ['B,0', 8],
+        ['A,0', 8],
+        ['G,0', 8],
+        ['A,0', 1]
+    ];
 
 	var fnPlayKeyboard = function(e) {
 	
@@ -232,40 +266,7 @@ window.Synth = function Synth(spectrogram) {
 		
 			// space
 			case 32:
-				fnPlaySong([
-					['E,0', 8],
-					['D,0', 8],
-					['C,0', 2],
-					['C,0', 8],
-					['D,0', 8],
-					['C,0', 8],
-					['E,0', 8],
-					['D,0', 1],
-					['C,0', 8],
-					['D,0', 8],
-					['E,0', 2],
-					['A,0', 8],
-					['G,0', 8],
-					['E,0', 8],
-					['C,0', 8],
-					['D,0', 1],
-					['A,0', 8],
-					['B,0', 8],
-					['C,1', 2],
-					['B,0', 8],
-					['C,1', 8],
-					['D,1', 8],
-					['C,1', 8],
-					['A,0', 1],
-					['G,0', 8],
-					['A,0', 8],
-					['B,0', 2],
-					['C,1', 8],
-					['B,0', 8],
-					['A,0', 8],
-					['G,0', 8],
-					['A,0', 1]
-				]);
+				fnPlaySong(song);
 				break;
 		
 		}
@@ -318,6 +319,10 @@ window.Synth = function Synth(spectrogram) {
 
 	window.addEventListener('keydown', fnPlayKeyboard);
 	window.addEventListener('keyup', fnRemoveKeyBinding);
+
+    if(isMobile) {
+        fnPlaySong(song);
+    }
 
     return this;
 }
