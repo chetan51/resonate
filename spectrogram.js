@@ -11,6 +11,7 @@ window.Spectrogram = function(mathbox) {
       domain: this.mathbox.viewport().axis(0),
       n: 1024,
       lineWidth: 2,
+      zIndex: 100,
     });
 }
 
