@@ -7,7 +7,7 @@ window.Spectrogram = function(mathbox) {
 
     this.mathbox.curve({
       id: 'composite',
-      color: 0x000000,
+      color: 0xFFFFFF,
       domain: this.mathbox.viewport().axis(0),
       n: 1024,
       lineWidth: 2,
