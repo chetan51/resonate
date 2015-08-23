@@ -42870,7 +42870,7 @@ MathBox.Animator.prototype = {
     factor = factor || 4;
 
     // Reduce
-    _.each(keys || object.__queue, function (queue, key) {
+    _.each(keys || object.__queue, function (key) {
       _.each(object.__queue[key], function (op) {
         op.hurry(factor);
       });
@@ -43700,7 +43700,7 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
 
     _.each(this.select(selector, true), function (primitive) {
       animator.stop(primitive, keys, true);
-      primitive.style && animator.stop(primitive.style, keys);
+      primitive.style && animator.stop(primitive.style, keys, true);
     });
 
     return this;
