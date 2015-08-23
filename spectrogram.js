@@ -1,6 +1,8 @@
 window.Spectrogram = function(mathbox) {
     this.mathbox = mathbox;
 
+    this.animationDuration = 200;
+
     this.frequencies = []
 
     this.mathbox.curve({
@@ -13,13 +15,15 @@ window.Spectrogram = function(mathbox) {
 }
 
 Spectrogram.prototype.add = function(frequencies) {
+    var self = this;
+
     this.frequencies = this.frequencies.concat(frequencies);
 
     for (frequency of frequencies) {
         var addCurve = function(frequency) {
             self.mathbox.curve({
               id: 'frequency-' + frequency,
-              domain: this.mathbox.viewport().axis(0),
+              domain: self.mathbox.viewport().axis(0),
               n: 1024,
               lineWidth: 1,
               color: parseInt(randomColor({hue: 'blue'}).replace(/^#/, ''), 16),
@@ -28,7 +32,7 @@ Spectrogram.prototype.add = function(frequencies) {
             self.mathbox.animate('#frequency-' + frequency, {
               expression: function (x) { return Math.sin(frequency * x * 2*Math.PI); },
             }, {
-              duration: 500,
+              duration: self.animationDuration,
             });
         }
 
@@ -49,12 +53,12 @@ Spectrogram.prototype.remove = function(frequencies) {
             self.mathbox.animate('#frequency-' + frequency, {
               expression: function (x) { return 0; },
             }, {
-              duration: 500,
+              duration: self.animationDuration,
               callback: function() {
                 self.mathbox.animate('#frequency-' + frequency, {
                     opacity: 0,
                 }, {
-                    duration: 500,
+                    duration: self.animationDuration,
                     callback: function () {
                         self.mathbox.remove('#frequency-' + frequency);
                     }
@@ -84,6 +88,6 @@ Spectrogram.prototype.updateComposite = function() {
         return y;
       },
     }, {
-      duration: 500,
+      duration: this.animationDuration,
     });
 }

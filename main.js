@@ -3,7 +3,9 @@ DomReady.ready(function() {
 
   spectrogram = new window.Spectrogram(mathbox);
 
-  spectrogram.add([440.0, 480.0]);
+  setTimeout(function() {
+    spectrogram.add([440.0, 480.0]);
+  }, 1000);
 
   setTimeout(function() {
     spectrogram.remove([440.0]);
