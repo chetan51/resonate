@@ -50,6 +50,16 @@ Spectrogram.prototype.remove = function(frequencies) {
               expression: function (x) { return 0; },
             }, {
               duration: 500,
+              callback: function() {
+                self.mathbox.animate('#frequency-' + frequency, {
+                    opacity: 0,
+                }, {
+                    duration: 500,
+                    callback: function () {
+                        self.mathbox.remove('#frequency-' + frequency);
+                    }
+                });
+              }
             });
         }
 
