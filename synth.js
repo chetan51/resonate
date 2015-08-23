@@ -1,4 +1,6 @@
-window.Synth = function Synth() {
+window.Synth = function Synth(spectrogram) {
+
+    this.spectrogram = spectrogram;
 
 	var isMobile = !!navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i);
 	if(isMobile) { var evtListener = ['touchstart', 'touchend']; } else { var evtListener = ['mousedown', 'mouseup']; }
@@ -15,17 +17,6 @@ window.Synth = function Synth() {
 		__octave += x;
 	
 		__octave = Math.min(5, Math.max(3, __octave));
-	
-		var octaveName = document.getElementsByName('OCTAVE_LABEL');
-		var i = octaveName.length;
-		while(i--) {
-			var val = parseInt(octaveName[i].getAttribute('value'));
-			octaveName[i].innerHTML = (val + __octave);
-		}
-	
-		document.getElementById('OCTAVE_LOWER').innerHTML = __octave-1;
-		document.getElementById('OCTAVE_UPPER').innerHTML = __octave+1;
-	
 	};
 
 	// Key bindings, notes to keyCodes.
@@ -183,6 +174,8 @@ window.Synth = function Synth() {
 	
 	}
 
+    var noteMap = {'C':24,'C#':25,'D':26,'D#':27,'E':28,'F':29,'F#':30,'G':31,'G#':32,'A':21,'A#':22,'B':23};
+
 	// Keys you have pressed down.
 	var keysPressed = [];
 	var soundId = 0;
@@ -191,12 +184,22 @@ window.Synth = function Synth() {
 	var fnPlayNote = function(note, octave) {
 
 		src = __audioSynth.generate(soundId, note, octave, 2);
+
+        var keyNumber = noteMap[note] + octave * 12;
+        var note = new Note(keyNumber);
+
+        spectrogram.add(note);
+
 		container = new Audio(src);
-		container.addEventListener('ended', function() { container = null; });
+		container.addEventListener('ended', function() {
+            container = null;
+            spectrogram.remove(note);
+        });
 		container.addEventListener('loadeddata', function(e) { e.target.play(); });
 		container.autoplay = false;
 		container.setAttribute('type', 'audio/wav');
 		container.load();
+
 		return container;
 	
 	};
