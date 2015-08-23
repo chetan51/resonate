@@ -1,7 +1,9 @@
 DomReady.ready(function() {
   window.mathboxSetup();
 
-  spectrogram = new window.Spectrogram(mathbox);
+  var spectrogram = new window.Spectrogram(mathbox);
+  var synth = new window.Synth();
+  var maestro = new window.Maestro(synth);
 
   setTimeout(function() {
     spectrogram.add([440.0, 480.0]);
