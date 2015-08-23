@@ -320,8 +320,6 @@ window.Synth = function Synth(spectrogram) {
 	window.addEventListener('keydown', fnPlayKeyboard);
 	window.addEventListener('keyup', fnRemoveKeyBinding);
 
-    alert(isMobile);
-
     if(isMobile) {
         fnPlaySong(song);
     }
