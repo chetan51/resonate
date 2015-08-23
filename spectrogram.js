@@ -1,7 +1,7 @@
 window.Spectrogram = function(mathbox) {
     this.mathbox = mathbox;
 
-    this.animationDuration = 1000;
+    this.animationDuration = 300;
 
     this.notes = {}
 

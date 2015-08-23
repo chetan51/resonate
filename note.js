@@ -1,6 +1,6 @@
-window.Note = function(keyNumber, duration) {
+window.Note = function(keyNumber, velocity) {
     this.keyNumber = keyNumber;
-    this.duration = duration;
+    this.velocity = velocity;
 }
 
 Note.prototype.frequency = function() {
