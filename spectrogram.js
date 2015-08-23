@@ -31,7 +31,7 @@ Spectrogram.prototype.add = function(note) {
     });
 
     self.mathbox.animate('#' + curveId, {
-      expression: function (x) { return Math.sin(note.frequency() * x * 2*Math.PI); },
+      expression: function (x) { return note.normalizedVelocity() * Math.sin(note.frequency() * x * 2*Math.PI); },
     }, {
       duration: self.animationDuration,
     });
@@ -79,7 +79,7 @@ Spectrogram.prototype.updateComposite = function() {
             var queue = notes[keyNumber];
 
             for (var note of queue) {
-                y += Math.sin(note.frequency() * x * 2*Math.PI);
+                y += note.normalizedVelocity() * Math.sin(note.frequency() * x * 2*Math.PI);
             }
         }
 

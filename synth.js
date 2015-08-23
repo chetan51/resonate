@@ -186,7 +186,7 @@ window.Synth = function Synth(spectrogram) {
 		src = __audioSynth.generate(soundId, note, octave, 2);
 
         var keyNumber = noteMap[note] + octave * 12;
-        var note = new Note(keyNumber);
+        var note = new Note(keyNumber, 127);
 
         spectrogram.add(note);
 
