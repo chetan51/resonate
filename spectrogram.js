@@ -1,7 +1,8 @@
-window.Spectrogram = function(mathbox) {
+window.Spectrogram = function(mathbox, showComponents) {
     this.mathbox = mathbox;
+    this.showComponents = showComponents;
 
-    this.animationDuration = 300;
+    this.animationDuration = 75;
 
     this.notes = {}
 
@@ -21,21 +22,23 @@ Spectrogram.prototype.add = function(note) {
     var queue = this.notes[note.keyNumber] = this.notes[note.keyNumber] || [];
     queue.push(note);
 
-    var curveId = 'note-' + note.keyNumber + '-' + queue.length;
+    if (this.showComponents) {
+        var curveId = 'note-' + note.keyNumber + '-' + queue.length;
 
-    self.mathbox.curve({
-      id: curveId,
-      domain: self.mathbox.viewport().axis(0),
-      n: 1024,
-      lineWidth: 1,
-      color: parseInt(randomColor({hue: 'blue'}).replace(/^#/, ''), 16),
-    });
+        self.mathbox.curve({
+          id: curveId,
+          domain: self.mathbox.viewport().axis(0),
+          n: 1024,
+          lineWidth: 1,
+          color: parseInt(randomColor({hue: 'blue'}).replace(/^#/, ''), 16),
+        });
 
-    self.mathbox.animate('#' + curveId, {
-      expression: function (x) { return note.normalizedVelocity() * Math.sin(note.frequency() * x * 2*Math.PI); },
-    }, {
-      duration: self.animationDuration,
-    });
+        self.mathbox.animate('#' + curveId, {
+          expression: function (x) { return note.normalizedVelocity() * Math.sin(note.frequency() * x * 2*Math.PI); },
+        }, {
+          duration: self.animationDuration,
+        });
+    }
 
     this.updateComposite();
 }
@@ -49,21 +52,23 @@ Spectrogram.prototype.remove = function(note) {
     queue.shift();
     if (queue.length == 0) delete this.notes[note.keyNumber];
 
-    self.mathbox.animate('#' + curveId, {
-      expression: function (x) { return 0; },
-    }, {
-      duration: self.animationDuration,
-      callback: function() {
+    if (this.showComponents) {
         self.mathbox.animate('#' + curveId, {
-            opacity: 0,
+          expression: function (x) { return 0; },
         }, {
-            duration: self.animationDuration,
-            callback: function () {
-                self.mathbox.remove('#' + curveId);
-            }
+          duration: self.animationDuration,
+          callback: function() {
+            self.mathbox.animate('#' + curveId, {
+                opacity: 0,
+            }, {
+                duration: self.animationDuration,
+                callback: function () {
+                    self.mathbox.remove('#' + curveId);
+                }
+            });
+          }
         });
-      }
-    });
+    }
 
     this.updateComposite();
 }
