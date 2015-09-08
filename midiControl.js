@@ -6,17 +6,18 @@ window.MidiControl = function MidiControl(spectrogram) {
 	var player = MIDI.Player;
 
 	var midiFileDir = "midifiles/";
-	var midiFiles = ["test1.mid", "test2.mid", "test3.mid"];
+	var midiFiles = ["test1.mid", "test2.mid", "test3.mid", "test4.mid"];
 	var currentMidiFile = "";
 
 	var fnVisualizeNote = function(keyNumber, keyChannel) {
         var note = new Note(keyNumber, 127);
-
         spectrogram.add(note);
-        setTimeout(function() {
-            spectrogram.remove(note);
-        }, 500);
 	};
+
+    var fnUnvisualizeNote = function(keyNumber, keyChannel) {
+        var note = new Note(keyNumber, 127);
+        spectrogram.remove(note);
+    };
 
 	var fnControlSong = function (e) {
 
@@ -55,15 +56,16 @@ window.MidiControl = function MidiControl(spectrogram) {
 				if (data.message === 144) {
 					keysPressed.push(pianoKey);
 					fnVisualizeNote(pianoKey, data.channel);
-				} 
+				}
 				// note was playing but is no longer
-				else {
+				else if (data.message == 128) {
 					var i = keysPressed.length;
 					while(i--) {
 						if(keysPressed[i]==pianoKey) {
 							keysPressed.splice(i, 1);
 						}
 					}
+                    fnUnvisualizeNote(pianoKey, data.channel);
 				}
 			}
 		});
@@ -77,6 +79,7 @@ window.MidiControl = function MidiControl(spectrogram) {
 				console.log(state, progress);
 			},
 			onsuccess: function() {
+                MIDI.programChange(1, 0);
 				window.addEventListener('keydown', fnControlSong);
 			}
 		});
