@@ -189,9 +189,6 @@ window.Synth = function Synth(spectrogram) {
         var note = new Note(keyNumber, 127);
 
         spectrogram.add(note);
-        setTimeout(function() {
-            spectrogram.remove(note);
-        }, 500);
 
 		container = new Audio(src);
 		container.addEventListener('ended', function() {
@@ -205,6 +202,13 @@ window.Synth = function Synth(spectrogram) {
 		return container;
 	
 	};
+
+    var fnRemoveNote = function(note, octave) {
+        var keyNumber = noteMap[note] + octave * 12;
+        var note = new Note(keyNumber, 127);
+
+        spectrogram.remove(note);
+    }
 
 	// Detect keypresses, play notes.
     var song = [
@@ -285,6 +289,10 @@ window.Synth = function Synth(spectrogram) {
 	// Remove key bindings once note is done.
 
 	var fnRemoveKeyBinding = function(e) {
+        var arrPlayNote = keyboard[e.keyCode].split(',');
+        var note = arrPlayNote[0];
+        var octaveModifier = arrPlayNote[1]|0;
+        fnRemoveNote(note, __octave + octaveModifier);
 	
 		var i = keysPressed.length;
 		while(i--) {
